@@ -32,21 +32,24 @@ function loadData() {
     var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
     console.log(nytAPI);
     
-    // Load articles and change header text
+    // Load resulting articles
     $.getJSON(nytAPI, function(data) {
         console.log(data);
-        
+
+        // Change header text
+        var chosenCity = city.capitalize();
+        $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
+    
+        // List articles under the header
         articles = data.response.docs;
         for (var i = 0; i < articles.length; i++) {
             var article = articles[i];
             $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
         };
 
-        var chosenCity = city.capitalize();
-        $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
-    
     });
 
+    // Prevent the submit function from reloading the page by default
     return false;
 
 };
