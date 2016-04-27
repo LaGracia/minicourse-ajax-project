@@ -29,7 +29,7 @@ function loadData() {
     $body.append('<img class="bgimg" src="' + streetview + '">');
 
     // Get NY Times articles on specified city
-    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=443ed21f018f5766fa4e8c77e1b1740a:0:51839516&callback=?';
+    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516&callback=?';
     console.log(nytAPI);
     $.getJSON(nytAPI, function(data) {
         console.log(data);
