@@ -29,24 +29,24 @@ function loadData() {
     $body.append('<img class="bgimg" src="' + streetview + '">');
 
     // Search for NY Times articles on specified city
-    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
+    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&fl=headline,snippet,web_url&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
     console.log(nytAPI);
     
     // Load resulting articles
     $.getJSON(nytAPI, function(data) {
         console.log(data);
 
-        // Change header text
-        var chosenCity = city.capitalize();
-        $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
-    
         // List articles under the header
-        articles = data.response.docs;
+        var articles = data.response.docs;
         for (var i = 0; i < articles.length; i++) {
             var article = articles[i];
             $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
         };
 
+    // Change header text
+    var chosenCity = city.capitalize();
+    $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
+    
     });
 
     // Prevent the submit function from reloading the page by default
