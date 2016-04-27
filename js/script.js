@@ -29,7 +29,7 @@ function loadData() {
     $body.append('<img class="bgimg" src="' + streetview + '">');
 
     // Search for NY Times articles on specified city
-    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
+    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
     console.log(nytAPI);
     
     // Load resulting articles
