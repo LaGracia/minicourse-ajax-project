@@ -28,24 +28,25 @@ function loadData() {
     $greeting.text('So you want to live at ' + address + '?')
     $body.append('<img class="bgimg" src="' + streetview + '">');
 
-    // Get NY Times articles on specified city
-    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516&callback=?';
+    // Search for NY Times articles on specified city
+    var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&sort=newest&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
     console.log(nytAPI);
+    
+    // Load articles and change header text
     $.getJSON(nytAPI, function(data) {
         console.log(data);
+        
+        articles = data.response.docs;
+        for (var i = 0; i < articles.length; i++) {
+            var article = articles[i];
+            $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
+        };
+
+        var chosenCity = city.capitalize();
+        $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
+    
     });
 
-    // Change articles header text
-    var nytCity = city.capitalize();
-    $nytHeaderElem.text('New York Times Articles About ' + nytCity);
-
-/*    // Load articles
-    articles = data.response.docs;
-    for (var i = 0; i < articles.length; i++) {
-        var article = articles[i];
-        $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
-    };
-*/    
     return false;
 
 };
