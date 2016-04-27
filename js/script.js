@@ -43,11 +43,14 @@ function loadData() {
             $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
         };
 
+    // Display an error message if the AJAX request fails
+    }).fail(function() {
+        $nytHeaderElem.text('Problem loading New York Times articles!');
+    });
+
     // Change header text
     var chosenCity = city.capitalize();
     $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
-    
-    });
 
     // Prevent the submit function from reloading the page by default
     return false;
