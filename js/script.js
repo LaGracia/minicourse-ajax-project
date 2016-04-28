@@ -2,10 +2,11 @@
 function loadData() {
 
     var $body = $('body');
-    var $wikiElem = $('#wikipedia-links');
+    var $greeting = $('#greeting');
     var $nytHeaderElem = $('#nytimes-header');
     var $nytElem = $('#nytimes-articles');
-    var $greeting = $('#greeting');
+    var $wikiHeaderElem = $('#wikipedia-header');
+    var $wikiElem = $('#wikipedia-links');
 
     // Clear out old data before new request
     $wikiElem.text("");
@@ -28,11 +29,11 @@ function loadData() {
     $greeting.text('So you want to live at ' + address + '?')
     $body.append('<img class="bgimg" src="' + streetview + '">');
 
-    // Search for NY Times articles on specified city
+    // Construct NYT API URL to search for articles for the chosen city
     var nytAPI = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + city + '&fl=headline,snippet,web_url&api-key=0297354ea0ef1f132d762f1a94732524:11:51839516';
     console.log(nytAPI);
     
-    // Load resulting articles
+    // Get articles using the URL
     $.getJSON(nytAPI, function(data) {
         console.log(data);
 
@@ -48,9 +49,42 @@ function loadData() {
         $nytHeaderElem.text('Problem loading New York Times articles!');
     });
 
-    // Change header text
+    // Change NY Times header text
     var chosenCity = city.capitalize();
     $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
+
+    // Construct MediaWiki API URL to search for Wikipedia links
+    var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=wikiCallback';
+    console.log(wikiURL);
+
+    // Timeout errors
+    var wikiTimeoutMsg = setTimeout(function () {
+        $wikiElem.text('Failed to get Wikipedia links!');
+    }, 6000);
+
+    // Get Wikipedia page titles and URLs
+    $.ajax({
+        url: wikiURL,
+        dataType: 'jsonp',
+        done: function (data) {
+            console.log(data);
+            
+            // List links under the header
+            var pageList = data[1];
+            for (var i = 0; i < pageList.length; i++) {
+                var pageTitle = pageList[i];
+                var pageURL = 'http://en.wikipedia.org/wiki/' + pageTitle;
+                $wikiElem.append('<li class="link"><a href="' + pageURL + '">' + pageTitle + '</a></li>');
+            };
+
+            // Prevent timeout message from appearing by default
+            clearTimeout(wikiTimeoutMsg);
+        }
+    });
+
+    // Change Wikipedia header text
+    var chosenCity = city.capitalize();
+    $wikiHeaderElem.text('Relevant Wikipedia Links About ' + chosenCity);
 
     // Prevent the submit function from reloading the page by default
     return false;
