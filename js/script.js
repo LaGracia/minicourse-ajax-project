@@ -65,21 +65,20 @@ function loadData() {
     // Get Wikipedia page titles and URLs
     $.ajax({
         url: wikiURL,
-        dataType: 'jsonp',
-        success: function(data) {
-            console.log(data);
+        dataType: 'jsonp'
+    }).done(function(data) {
+        console.log(data);
             
-            // List links under the header
-            var pageList = data[1];
-            for (var i = 0; i < pageList.length; i++) {
-                var pageTitle = pageList[i];
-                var pageURL = 'http://en.wikipedia.org/wiki/' + pageTitle;
-                $wikiElem.append('<li class="link"><a href="' + pageURL + '">' + pageTitle + '</a></li>');
-            };
+        // List links under the header
+        var pageList = data[1];
+        for (var i = 0; i < pageList.length; i++) {
+            var pageTitle = pageList[i];
+            var pageURL = 'http://en.wikipedia.org/wiki/' + pageTitle;
+            $wikiElem.append('<li class="link"><a href="' + pageURL + '">' + pageTitle + '</a></li>');
+        };
 
-            // Prevent timeout message from appearing by default
-            clearTimeout(wikiTimeoutMsg);
-        }
+        // Prevent timeout message from appearing by default
+        clearTimeout(wikiTimeoutMsg);
     });
 
     // Change Wikipedia header text
