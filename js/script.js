@@ -44,7 +44,7 @@ function loadData() {
             $nytElem.append('<li class="article"> <a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>');
         };
 
-    // Display an error message if the AJAX request fails
+    // Display an error message if the request fails
     }).fail(function() {
         $nytHeaderElem.text('Problem loading New York Times articles!');
     });
@@ -54,11 +54,11 @@ function loadData() {
     $nytHeaderElem.text('New York Times Articles About ' + chosenCity);
 
     // Construct MediaWiki API URL to search for Wikipedia links
-    var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=wikiCallback';
+    var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=?';
     console.log(wikiURL);
 
-    // Timeout errors
-    var wikiTimeoutMsg = setTimeout(function () {
+    // Time out any error
+    var wikiTimeoutMsg = setTimeout(function() {
         $wikiElem.text('Failed to get Wikipedia links!');
     }, 6000);
 
@@ -66,7 +66,7 @@ function loadData() {
     $.ajax({
         url: wikiURL,
         dataType: 'jsonp',
-        done: function (data) {
+        success: function(data) {
             console.log(data);
             
             // List links under the header
